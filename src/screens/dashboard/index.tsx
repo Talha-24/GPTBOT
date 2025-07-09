@@ -49,7 +49,7 @@ const ChatScreen: React.FC = () => {
     }, [Messages])
     return (
         <div className='w-full h-full flex flex-col justify-between'>
-            <div className="sidebar w-50 bg-[#222222] p-2 absolute left-0 h-screen z-20 ">
+            <div className="sidebar w-50 bg-[#222222] h-full">
                 <div className='h-full w-full z-22'>
                     <div className="header py-2 bg-yellow-500 text-white text-center flex flex-row items-center">
                         <div>
