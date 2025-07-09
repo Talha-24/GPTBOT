@@ -7,7 +7,7 @@ import { HiOutlinePencilAlt } from "react-icons/hi";
 const ChatScreen: React.FC = () => {
     const [Messages, setMessages] = useState<any[]>([]);
     const [userInput, setUserInput] = useState<string>("");
-    const chatRef = useRef(null);
+    const chatRef = useRef<HTMLDivElement | null>(null);
 
     const fetchAiResponse = () => {
 
@@ -45,7 +45,9 @@ const ChatScreen: React.FC = () => {
         summarizeTranscript();
     }
     useEffect(() => {
-        chatRef?.current.scrollIntoView({ behaviour: 'smooth' });
+        if (chatRef.current) {
+            chatRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
     }, [Messages])
     return (
         <div className='w-full h-full flex flex-col justify-between'>
@@ -55,7 +57,7 @@ const ChatScreen: React.FC = () => {
                         <div>
                             <input className='border-1' type="text" />
                         </div>
-                        <HiOutlinePencilAlt  />
+                        <HiOutlinePencilAlt />
 
 
                         hahsdfaf
