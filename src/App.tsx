@@ -1,5 +1,8 @@
 import React from 'react'
 import ChatScreen from './screens/dashboard'
+import Loading from './screens/load'
+import OnBoard from './screens/onboard'
+import Home from './socket/implementation'
 
 const App:React.FC = () => {
 /* 9 July
@@ -18,9 +21,11 @@ const App:React.FC = () => {
   
   return (
     <div className='min-h-screen w-full'>
-      <ChatScreen/>
+      {/* <ChatScreen/> */}
+      {/* <Loading/> */}
+      {/* <OnBoard/> */}
       {/* <CHATAPP/> */}
-      {/* <Home/> */}
+      <Home/>
       {/* <ChatArea/> */}
     </div>
   )

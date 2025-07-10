@@ -47,23 +47,32 @@ const ChatScreen: React.FC = () => {
 
 
     const ai = new GoogleGenAI({ apiKey: "AIzaSyAU2oI55Pm3But1oWKH7XWi5y0IpEXHKdM" });
-
     async function fetchAiResponse() {
-        const user={type: "receiver", message: userInput};
+        const user = { type: "receiver", message: userInput };
         setUserInput('');
+
         const response = await ai.models.generateContent({
             model: "gemini-2.5-flash",
-            contents: user.message,
+            contents: `
+You are a helpful assistant. Please answer the following user question in **Markdown format**.
+
+Format:
+- Start with a **bold heading**
+- Include a short paragraph explanation
+- Follow with a bullet list (using emojis)
+- End with a cheerful conclusion and an emoji 🎉
+
+User question: "${user.message}"
+    `,
+            generationConfig: {
+                response_mime_type: "text/markdown"
+            }
         });
-        const gemini={type: "sender", message: response.text};
-        console.log(user,gemini);
-        setMessages((prev)=>[...prev, user,gemini])
+
+        const gemini = { type: "sender", message: response.text };
+        console.log(user, gemini);
+        setMessages((prev) => [...prev, user, gemini]);
     }
-
-
-
-
-
 
 
 
@@ -72,6 +81,10 @@ const ChatScreen: React.FC = () => {
             chatRef.current.scrollIntoView({ behavior: 'smooth' });
         }
     }, [Messages])
+
+
+
+
 
 
     return (
@@ -117,7 +130,14 @@ const ChatScreen: React.FC = () => {
             {/* CHAT AREA */}
             <div className='chat-area pb-20 h-[calc(100vh-100px)] bg-[#dadada] py-4 px-10 overflow-y-auto max-[649px]:px-2'>
                 {Messages.map((value) => {
+
+
+
                     if (value.type == "receiver") {
+
+
+
+
                         return <div className='user-chat flex justify-end w-full my-2 gap-2'>
 
                             <div className='min-md:w-2/5  w-9/10   bg-white   text-[var(--primary-bg)] max-[649px]:text-sm text-lg py-2 rounded-sm p-2  flex flex-row items-center justify-between'>
@@ -137,7 +157,19 @@ const ChatScreen: React.FC = () => {
                             </div>
                         </div>
                     } else {
+
+                        console.log(value.message);
+
+                        // for (let char in value.message) {
+                        //     console.log("Hello", char);
+                        // }
                         return (
+
+
+
+
+
+
                             <div className='user-chat  flex justify-start w-full h-auto gap-4 my-2'>
                                 <div className='h-10 w-5'>
                                     <img src={PrimaryRoboIcon} alt="" />
