@@ -33,22 +33,13 @@ const Dashboard: React.FC = () => {
         }
     }
 
-
-
-
-
-
-
-    console.log("allccats", allChats);
-
-
     useEffect(() => {
         viewUsers();
     }, [])
 
     return (
-        <div className='flex flex-col p-4 gap-4'>
-            <div className='user flex flex-row items-center gap-4'>
+        <div className='flex flex-col p-4 gap-4 bg-green-200'>
+            <div className='user flex flex-row items-center gap-4 w-full bg-green-600 py-3 px-2 text-white'>
                 <h1 className='font-bold'>CHAT APP</h1>
 
             </div>
