@@ -1,58 +1,83 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { PrimaryRoboIcon, MessageSendIcon, MicrophoneIcon, VolumeIcon, ExitIcon, LoaderIcon } from "../../assets/svg/index"
-import { HiOutlinePencilAlt } from "react-icons/hi";
-
-
+import { GoogleGenAI } from "@google/genai";
 
 const ChatScreen: React.FC = () => {
     const [Messages, setMessages] = useState<any[]>([]);
     const [userInput, setUserInput] = useState<string>("");
     const chatRef = useRef<HTMLDivElement | null>(null);
 
-    const fetchAiResponse = () => {
+    // const fetchAiResponse = () => {
 
-        async function summarizeTranscript() {
-            try {
-                const response = await fetch("https://api.openai.com/v1/chat/completions", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer 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`
-                    },
-                    body: JSON.stringify({
-                        model: "gpt-4",
-                        messages: [
-                            {
-                                role: "user",
-                                content: userInput,
-                            }
-                        ]
-                    }),
-                });
+    //     async function summarizeTranscript() {
+    //         try {
+    //             const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    //                 method: "POST",
+    //                 headers: {
+    //                     "Content-Type": "application/json",
+    //                     "Authorization": `Bearer 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`
+    //                 },
+    //                 body: JSON.stringify({
+    //                     model: "gpt-4",
+    //                     messages: [
+    //                         {
+    //                             role: "user",
+    //                             content: userInput,
+    //                         }
+    //                     ]
+    //                 }),
+    //             });
 
-                const data = await response.json();
-                const summary = data.choices[0].message.content.trim();
-                const user = { type: "receiver", message: userInput };
-                setUserInput('');
-                const ai = { type: "sender", message: summary };
-                setMessages((prev) => [...prev, user, ai]);
-                return summary;
-            } catch (error) {
-                console.error("Error summarizing transcript:", error);
-                return null;
-            }
-        }
-        summarizeTranscript();
+    //             const data = await response.json();
+    //             const summary = data.choices[0].message.content.trim();
+    //             const user = { type: "receiver", message: userInput };
+    //             setUserInput('');
+    //             const ai = { type: "sender", message: summary };
+    //             setMessages((prev) => [...prev, user, ai]);
+    //             return summary;
+    //         } catch (error) {
+    //             console.error("Error summarizing transcript:", error);
+    //             return null;
+    //         }
+    //     }
+    //     summarizeTranscript();
+    // }
+
+
+
+
+    const ai = new GoogleGenAI({ apiKey: "AIzaSyAU2oI55Pm3But1oWKH7XWi5y0IpEXHKdM" });
+
+    async function fetchAiResponse() {
+        const user={type: "receiver", message: userInput};
+        setUserInput('');
+        const response = await ai.models.generateContent({
+            model: "gemini-2.5-flash",
+            contents: user.message,
+        });
+        const gemini={type: "sender", message: response.text};
+        console.log(user,gemini);
+        setMessages((prev)=>[...prev, user,gemini])
     }
+
+
+
+
+
+
+
+
     useEffect(() => {
         if (chatRef.current) {
             chatRef.current.scrollIntoView({ behavior: 'smooth' });
         }
     }, [Messages])
+
+
     return (
         <div className='w-full h-full flex flex-col justify-between'>
-            <div className="sidebar w-50 bg-[#222222] h-full">
-                <div className='h-full w-full z-22'>
+            {/* <div className="sidebar w-50 bg-[#222222] h-full"> */}
+            {/* <div className='h-full w-full z-22'>
                     <div className="header py-2 bg-yellow-500 text-white text-center flex flex-row items-center">
                         <div>
                             <input className='border-1' type="text" />
@@ -63,9 +88,8 @@ const ChatScreen: React.FC = () => {
                         hahsdfaf
                     </div>
                     hasdfaf
-                </div>
-            </div>
-
+                </div> */}
+            {/* </div> */}
 
             <div className='header border-b-1 border-black py-2 sticky top-0 left-0  bg-white w-full'>
                 <div className='flex justify-between  font-[Nunito] px-10 py-2 gap-5 max-sm:px-2 max-[649px]:p-2'>
@@ -161,9 +185,6 @@ const ChatScreen: React.FC = () => {
                     </div>
                 </div>
             </div>
-
-
-
         </div>
     )
 }
